@@ -1,8 +1,14 @@
-//
-// Created by apostle on 3/2/21.
-//
+#ifndef TOKENIZER_H
+#define TOKENIZER_H
 
-#ifndef INC_403ASGN4_TOKENIZER_H
-#define INC_403ASGN4_TOKENIZER_H
+//variables
 
-#endif //INC_403ASGN4_TOKENIZER_H
+
+//structs
+
+
+
+//functions
+_Bool tokenizer(struct lexics *aLex, int *numLex, FILE *inf);
+
+#endif

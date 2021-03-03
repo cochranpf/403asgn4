@@ -1,8 +1,14 @@
-//
-// Created by apostle on 3/2/21.
-//
+#ifndef PARSER_H
+#define PARSER_H
 
-#ifndef INC_403ASGN4_PARSER_H
-#define INC_403ASGN4_PARSER_H
+//variables
 
-#endif //INC_403ASGN4_PARSER_H
+
+//structs
+
+
+
+//functions
+_Bool parser(struct lexics *someLexics, int numberOfLexics);
+
+#endif
