@@ -10,6 +10,11 @@
 #define LEXEME_MAX 256
 #define MY_CHAR_MAX 256
 
+/* an enum is basically a variable with states. Each state has an integer value
+   assigned to it. I assume that this will be used by setting a token equal to
+   a char array and determining if the value is between 0 and 12 (there are 13
+   tokens in the enum)
+*/
 enum token{ LEFT_PARENTHESIS,
 			RIGHT_PARENTHESIS,
 			LEFT_BRACKET,
@@ -25,6 +30,8 @@ enum token{ LEFT_PARENTHESIS,
 			NUMBER
 		   };
 
+/* An array of these structs will be passed into the tokenizer.
+*/
 struct lexics{
 	enum token token;
 	char lexeme[LEXEME_MAX];
