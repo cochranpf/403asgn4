@@ -18,7 +18,7 @@ int main(){
 	//Define a character array to store the name of the file to read and write
 	char filename[MY_CHAR_MAX];  
 	//Prompt the user to input a filename and continue to prompt the user until they enter a correct one
-	while(infile == NULL) {  
+	while(infile == NULL) {  //<-- infile is a pointer here
 		printf("Enter filename: ");  
 		scanf("%s",filename);
 		//When given a filename, use fopen to create a new file pointer. 
@@ -32,6 +32,11 @@ int main(){
 
 	struct lexics allLexics[1024];
 	int numberOfLexics = 0;
+
+	/* I will need some way to keep track of the current index of the
+	   lexics array as I add new lexics
+	*/
+
 	printf("Did tokenize: %d\n",tokenizer(allLexics, &numberOfLexics, infile));
 	printf("Number of lexemes: %d\n",numberOfLexics);
 	printf("Lexemes: ");
