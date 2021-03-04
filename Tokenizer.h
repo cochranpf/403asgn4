@@ -14,10 +14,10 @@
 //functions
 _Bool tokenizer(struct lexics *aLex, int *numLex, FILE *inf);
 
-_Bool generateLexemes(struct lexics *lexArray, int *numLexemes, FILE *inputFile);
+_Bool generateLexemes(struct lexics *lexArray, int *numLexics, FILE *inputFile);
 
 int isDelimiter(char c);
 
-_Bool tokenizeLexemes(struct lexics *lexArray, int *numLexemes);
+_Bool tokenizeLexemes(struct lexics *lexArray, int *numLexics);
 
 #endif
