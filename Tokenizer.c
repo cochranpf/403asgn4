@@ -21,46 +21,152 @@ _Bool tokenizer(struct lexics *aLex, int *numLex, FILE *inf){
     lexResult = generateLexemes(aLex, numLex, inf);
     printf("Lexemes generated.\n");
 
-    printf("FROM MAIN: %s\n", aLex[0].lexeme);
-
-    return FALSE;
+    if (lexResult == TRUE){
+        return TRUE;
+    }
+    else{
+        return FALSE;
+    }
 }
 
 _Bool generateLexemes(struct lexics *lexArray, int *numLexemes, FILE *inputFile){
     char c;  //current char
     char pc; //previous char
-    int prevDelim = 0;
+    int prevDelim = 3;
     int builderIndex = 0;
     char lexemeBuilder[LEXEME_MAX];
+
     while ((c=fgetc(inputFile)) != EOF) {
-        //printf("%c", c);
-        //printf("%d", isDelimiter(c));
-        if (isDelimiter(c) == 0){
-            lexemeBuilder[builderIndex] = c;
-            builderIndex++;
-            prevDelim = 0;
-            printf("Added %c to the lexemeBuilder!\n", c);
-            pc = c;
-        }
-        else if (isDelimiter(c) == 3){ //cases need to be added for finding consecutive whitespace
-            printf("Found whitespace \'%c\'! Resetting the builder.\n", c);
-            if ((prevDelim == 0)||(prevDelim == 1)||(prevDelim = 2)){
+        if (prevDelim == 0){
+            if (isDelimiter(c) == 0){
+                lexemeBuilder[builderIndex] = c;
+                builderIndex++;
+                prevDelim = 0;
+                pc = c;
+            }
+            else if (isDelimiter(c) == 1){
                 lexemeBuilder[builderIndex] = '\0';
                 memcpy(lexArray[*numLexemes].lexeme, lexemeBuilder, LEXEME_MAX);
-                builderIndex = 0;
                 *numLexemes = *numLexemes + 1;
-                prevDelim = 3;
+                builderIndex = 0;
+                lexArray[*numLexemes].lexeme[0] = c;
+                lexArray[*numLexemes].lexeme[1] = '\0';
+                *numLexemes = *numLexemes + 1;
+                prevDelim = 1;
                 pc = c;
             }
-            else {
+            else if (isDelimiter(c) == 2){
+                lexemeBuilder[builderIndex] = '\0';
+                memcpy(lexArray[*numLexemes].lexeme, lexemeBuilder, LEXEME_MAX);
+                *numLexemes = *numLexemes + 1;
+                builderIndex = 0;
+                lexemeBuilder[builderIndex] = 'c';
+                builderIndex++;
+                prevDelim = 2;
+                pc = c;
+            }
+            else if (isDelimiter(c) == 3){
+                lexemeBuilder[builderIndex] = '\0';
+                memcpy(lexArray[*numLexemes].lexeme, lexemeBuilder, LEXEME_MAX);
+                *numLexemes = *numLexemes + 1;
                 builderIndex = 0;
                 prevDelim = 3;
                 pc = c;
             }
-
-        } //THOUGHTS: need extra cases above, need make sure builder array is empty
+        }
+        else if (prevDelim == 1){
+            if (isDelimiter(c) == 0){
+                lexemeBuilder[builderIndex] = c;
+                builderIndex++;
+                prevDelim = 0;
+                pc = c;
+            }
+            else if (isDelimiter(c) == 1){
+                lexArray[*numLexemes].lexeme[0] = c;
+                lexArray[*numLexemes].lexeme[1] = '\0';
+                *numLexemes = *numLexemes + 1;
+                prevDelim = 1;
+                pc = c;
+            }
+            else if (isDelimiter(c) == 2){
+                lexemeBuilder[builderIndex] = 'c';
+                builderIndex++;
+                prevDelim = 2;
+                pc = c;
+            }
+            else if (isDelimiter(c) == 3){
+                prevDelim = 3;
+                pc = c;
+            }
+        }
+        else if (prevDelim == 2){
+            if (isDelimiter(c) == 0){
+                lexemeBuilder[builderIndex] = '\0';
+                memcpy(lexArray[*numLexemes].lexeme, lexemeBuilder, LEXEME_MAX);
+                *numLexemes = *numLexemes + 1;
+                builderIndex = 0;
+                lexemeBuilder[builderIndex] = c;
+                builderIndex++;
+                prevDelim = 0;
+                pc = c;
+            }
+            else if (isDelimiter(c) == 1){
+                lexemeBuilder[builderIndex] = '\0';
+                memcpy(lexArray[*numLexemes].lexeme, lexemeBuilder, LEXEME_MAX);
+                *numLexemes = *numLexemes + 1;
+                builderIndex = 0;
+                lexArray[*numLexemes].lexeme[0] = c;
+                lexArray[*numLexemes].lexeme[1] = '\0';
+                *numLexemes = *numLexemes + 1;
+                prevDelim = 1;
+                pc = c;
+            }
+            else if (isDelimiter(c) == 2){
+                lexemeBuilder[builderIndex] = c;
+                builderIndex++;
+                lexemeBuilder[builderIndex] = '\0';
+                memcpy(lexArray[*numLexemes].lexeme, lexemeBuilder, LEXEME_MAX);
+                *numLexemes = *numLexemes + 1;
+                builderIndex = 0;
+                prevDelim = 2;
+                pc = c;
+            }
+            else if (isDelimiter(c) == 3){
+                lexemeBuilder[builderIndex] = '\0';
+                memcpy(lexArray[*numLexemes].lexeme, lexemeBuilder, LEXEME_MAX);
+                *numLexemes = *numLexemes + 1;
+                builderIndex = 0;
+                prevDelim = 3;
+                pc = c;
+            }
+        }
+        else if (prevDelim == 3){
+            if (isDelimiter(c) == 0){
+                lexemeBuilder[builderIndex] = c;
+                builderIndex++;
+                prevDelim = 0;
+                pc = c;
+            }
+            else if (isDelimiter(c) == 1){
+                lexArray[*numLexemes].lexeme[0] = c;
+                lexArray[*numLexemes].lexeme[1] = '\0';
+                *numLexemes = *numLexemes + 1;
+                prevDelim = 1;
+                pc = c;
+            }
+            else if (isDelimiter(c) == 2){
+                lexemeBuilder[builderIndex] = 'c';
+                builderIndex++;
+                prevDelim = 2;
+                pc = c;
+            }
+            else if (isDelimiter(c) == 3){
+                prevDelim = 3;
+                pc = c;
+            }
+        }
     }
-    return FALSE;
+    return TRUE;
 }
 
 /* checks for delimiter, returns an integer value meaning the following:
