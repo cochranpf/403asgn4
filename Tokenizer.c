@@ -31,7 +31,6 @@ _Bool tokenizer(struct lexics *aLex, int *numLex, FILE *inf){
 
 _Bool generateLexemes(struct lexics *lexArray, int *numLexemes, FILE *inputFile){
     char c;  //current char
-    char pc; //previous char
     int prevDelim = 3;
     int builderIndex = 0;
     char lexemeBuilder[LEXEME_MAX];
@@ -42,7 +41,6 @@ _Bool generateLexemes(struct lexics *lexArray, int *numLexemes, FILE *inputFile)
                 lexemeBuilder[builderIndex] = c;
                 builderIndex++;
                 prevDelim = 0;
-                pc = c;
             }
             else if (isDelimiter(c) == 1){
                 lexemeBuilder[builderIndex] = '\0';
@@ -53,17 +51,15 @@ _Bool generateLexemes(struct lexics *lexArray, int *numLexemes, FILE *inputFile)
                 lexArray[*numLexemes].lexeme[1] = '\0';
                 *numLexemes = *numLexemes + 1;
                 prevDelim = 1;
-                pc = c;
             }
             else if (isDelimiter(c) == 2){
                 lexemeBuilder[builderIndex] = '\0';
                 memcpy(lexArray[*numLexemes].lexeme, lexemeBuilder, LEXEME_MAX);
                 *numLexemes = *numLexemes + 1;
                 builderIndex = 0;
-                lexemeBuilder[builderIndex] = 'c';
+                lexemeBuilder[builderIndex] = c;
                 builderIndex++;
                 prevDelim = 2;
-                pc = c;
             }
             else if (isDelimiter(c) == 3){
                 lexemeBuilder[builderIndex] = '\0';
@@ -71,7 +67,6 @@ _Bool generateLexemes(struct lexics *lexArray, int *numLexemes, FILE *inputFile)
                 *numLexemes = *numLexemes + 1;
                 builderIndex = 0;
                 prevDelim = 3;
-                pc = c;
             }
         }
         else if (prevDelim == 1){
@@ -79,24 +74,20 @@ _Bool generateLexemes(struct lexics *lexArray, int *numLexemes, FILE *inputFile)
                 lexemeBuilder[builderIndex] = c;
                 builderIndex++;
                 prevDelim = 0;
-                pc = c;
             }
             else if (isDelimiter(c) == 1){
                 lexArray[*numLexemes].lexeme[0] = c;
                 lexArray[*numLexemes].lexeme[1] = '\0';
                 *numLexemes = *numLexemes + 1;
                 prevDelim = 1;
-                pc = c;
             }
             else if (isDelimiter(c) == 2){
-                lexemeBuilder[builderIndex] = 'c';
+                lexemeBuilder[builderIndex] = c;
                 builderIndex++;
                 prevDelim = 2;
-                pc = c;
             }
             else if (isDelimiter(c) == 3){
                 prevDelim = 3;
-                pc = c;
             }
         }
         else if (prevDelim == 2){
@@ -108,7 +99,6 @@ _Bool generateLexemes(struct lexics *lexArray, int *numLexemes, FILE *inputFile)
                 lexemeBuilder[builderIndex] = c;
                 builderIndex++;
                 prevDelim = 0;
-                pc = c;
             }
             else if (isDelimiter(c) == 1){
                 lexemeBuilder[builderIndex] = '\0';
@@ -119,7 +109,6 @@ _Bool generateLexemes(struct lexics *lexArray, int *numLexemes, FILE *inputFile)
                 lexArray[*numLexemes].lexeme[1] = '\0';
                 *numLexemes = *numLexemes + 1;
                 prevDelim = 1;
-                pc = c;
             }
             else if (isDelimiter(c) == 2){
                 lexemeBuilder[builderIndex] = c;
@@ -128,8 +117,7 @@ _Bool generateLexemes(struct lexics *lexArray, int *numLexemes, FILE *inputFile)
                 memcpy(lexArray[*numLexemes].lexeme, lexemeBuilder, LEXEME_MAX);
                 *numLexemes = *numLexemes + 1;
                 builderIndex = 0;
-                prevDelim = 2;
-                pc = c;
+                prevDelim = 1; //this is to account for a case like == derp
             }
             else if (isDelimiter(c) == 3){
                 lexemeBuilder[builderIndex] = '\0';
@@ -137,7 +125,6 @@ _Bool generateLexemes(struct lexics *lexArray, int *numLexemes, FILE *inputFile)
                 *numLexemes = *numLexemes + 1;
                 builderIndex = 0;
                 prevDelim = 3;
-                pc = c;
             }
         }
         else if (prevDelim == 3){
@@ -145,24 +132,20 @@ _Bool generateLexemes(struct lexics *lexArray, int *numLexemes, FILE *inputFile)
                 lexemeBuilder[builderIndex] = c;
                 builderIndex++;
                 prevDelim = 0;
-                pc = c;
             }
             else if (isDelimiter(c) == 1){
                 lexArray[*numLexemes].lexeme[0] = c;
                 lexArray[*numLexemes].lexeme[1] = '\0';
                 *numLexemes = *numLexemes + 1;
                 prevDelim = 1;
-                pc = c;
             }
             else if (isDelimiter(c) == 2){
-                lexemeBuilder[builderIndex] = 'c';
+                lexemeBuilder[builderIndex] = c;
                 builderIndex++;
                 prevDelim = 2;
-                pc = c;
             }
             else if (isDelimiter(c) == 3){
                 prevDelim = 3;
-                pc = c;
             }
         }
     }
@@ -191,4 +174,8 @@ int isDelimiter(char c){
     else {
         return 0;
     }
+}
+
+_Bool tokenizeLexemes(struct lexics *lexArray, int *numLexemes){
+
 }

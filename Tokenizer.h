@@ -18,4 +18,6 @@ _Bool generateLexemes(struct lexics *lexArray, int *numLexemes, FILE *inputFile)
 
 int isDelimiter(char c);
 
+_Bool tokenizeLexemes(struct lexics *lexArray, int *numLexemes);
+
 #endif
