@@ -29,7 +29,7 @@ int main(){
 	  	}
 	}
 
-
+    //initializes lexics array with 1024 structs
 	struct lexics allLexics[1024];
 	int numberOfLexics = 0;
 

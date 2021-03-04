@@ -2,6 +2,7 @@
 #define TOKENIZER_H
 
 #include "Givens.h"
+#include <string.h>
 
 //variables
 

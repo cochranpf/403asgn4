@@ -27,10 +27,25 @@ _Bool tokenizer(struct lexics *aLex, int *numLex, FILE *inf){
 _Bool generateLexemes(struct lexics *lexArray, int *numLexemes, FILE *inputFile){
     char c;  //current char
     char pc; //previous char
+    int prevDelim;
+    int builderIndex = 0;
     char lexemeBuilder[LEXEME_MAX];
     while ((c=fgetc(inputFile)) != EOF) {
-        printf("%c", c);
-        printf("%d", isDelimiter(c));
+        //printf("%c", c);
+        //printf("%d", isDelimiter(c));
+        if (isDelimiter(c) == 0){
+            lexemeBuilder[builderIndex] = c;
+            builderIndex++;
+            printf("Added %c to the lexemeBuilder!\n", c);
+        }
+        else if (isDelimiter(c) == 3){ //cases need to be added for finding consecutive whitespace
+            printf("Found whitespace \'%c\'! Resetting the builder.\n", c);
+            lexemeBuilder[builderIndex] = '\0';
+            memcpy(lexArray[*numLexemes].lexeme, lexemeBuilder, LEXEME_MAX);
+            builderIndex = 0;
+            *numLexemes++;
+        } //THOUGHTS: need extra cases above, need to validate the array copied right,
+          //and need to finish resetting the builder array back to empty
     }
     return FALSE;
 }
