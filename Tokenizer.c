@@ -21,13 +21,15 @@ _Bool tokenizer(struct lexics *aLex, int *numLex, FILE *inf){
     lexResult = generateLexemes(aLex, numLex, inf);
     printf("Lexemes generated.\n");
 
+    printf("FROM MAIN: %s\n", aLex[0].lexeme);
+
     return FALSE;
 }
 
 _Bool generateLexemes(struct lexics *lexArray, int *numLexemes, FILE *inputFile){
     char c;  //current char
     char pc; //previous char
-    int prevDelim;
+    int prevDelim = 0;
     int builderIndex = 0;
     char lexemeBuilder[LEXEME_MAX];
     while ((c=fgetc(inputFile)) != EOF) {
@@ -36,16 +38,27 @@ _Bool generateLexemes(struct lexics *lexArray, int *numLexemes, FILE *inputFile)
         if (isDelimiter(c) == 0){
             lexemeBuilder[builderIndex] = c;
             builderIndex++;
+            prevDelim = 0;
             printf("Added %c to the lexemeBuilder!\n", c);
+            pc = c;
         }
         else if (isDelimiter(c) == 3){ //cases need to be added for finding consecutive whitespace
             printf("Found whitespace \'%c\'! Resetting the builder.\n", c);
-            lexemeBuilder[builderIndex] = '\0';
-            memcpy(lexArray[*numLexemes].lexeme, lexemeBuilder, LEXEME_MAX);
-            builderIndex = 0;
-            *numLexemes++;
-        } //THOUGHTS: need extra cases above, need to validate the array copied right,
-          //and need to finish resetting the builder array back to empty
+            if ((prevDelim == 0)||(prevDelim == 1)||(prevDelim = 2)){
+                lexemeBuilder[builderIndex] = '\0';
+                memcpy(lexArray[*numLexemes].lexeme, lexemeBuilder, LEXEME_MAX);
+                builderIndex = 0;
+                *numLexemes = *numLexemes + 1;
+                prevDelim = 3;
+                pc = c;
+            }
+            else {
+                builderIndex = 0;
+                prevDelim = 3;
+                pc = c;
+            }
+
+        } //THOUGHTS: need extra cases above, need make sure builder array is empty
     }
     return FALSE;
 }
