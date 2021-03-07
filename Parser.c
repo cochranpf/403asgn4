@@ -1,5 +1,65 @@
 #include "Parser.h"
 
 _Bool parser(struct lexics *someLexics, int numberOfLexics){
-    return FALSE;
+    index = 0;
+    if (function()){
+        return TRUE;
+    }
+    else{
+        return FALSE;
+    }
+}
+
+_Bool function(){
+
+}
+
+_Bool header(){
+
+}
+
+_Bool argDecl(){
+
+}
+
+_Bool body(){
+
+}
+
+_Bool statementList(){
+
+}
+
+_Bool statement(){
+
+}
+
+_Bool whileLoop(){
+
+}
+
+_Bool returnStatement(){
+
+}
+
+_Bool assignment(){
+
+}
+
+_Bool expression(){
+
+}
+
+_Bool term(){
+
+}
+
+_Bool match(enum token tok){
+    if (someLexics[index].token == tok){
+        index++;
+        return TRUE;
+    }
+    else{
+        return FALSE;
+    }
 }
