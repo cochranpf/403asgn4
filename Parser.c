@@ -11,11 +11,26 @@ _Bool parser(struct lexics *someLexics, int numberOfLexics){
 }
 
 _Bool function(){
-
+    if ((header())&&(body())){
+        return TRUE;
+    }
+    else{
+        return FALSE;
+    }
 }
 
 _Bool header(){
+    if (match(VARTYPE)){
+        if(match(IDENTIFIER)){
 
+        }
+        else{
+            return FALSE;
+        }
+    }
+    else{
+        return FALSE;
+    }
 }
 
 _Bool argDecl(){
