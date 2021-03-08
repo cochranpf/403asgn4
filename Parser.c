@@ -213,7 +213,25 @@ _Bool whileLoop(){
             (someLexics[index].token == IDENTIFIER)||
             (someLexics[index].token == NUMBER)){
                 if (expression()){
-                    return TRUE;
+                    if (match(RIGHT_PARENTHESIS)){
+                        if ((someLexics[index].token == WHILE_KEYWORD)||
+                        (someLexics[index].token == RETURN_KEYWORD)||
+                        (someLexics[index].token == IDENTIFIER)||
+                        (someLexics[index].token == LEFT_BRACKET)){
+                            if (statement()){
+                                return TRUE;
+                            }
+                            else{
+                                return FALSE;
+                            }
+                        }
+                        else{
+                            return FALSE;
+                        }
+                    }
+                    else{
+                        return FALSE;
+                    }
                 }
                 else{
                     return FALSE;
@@ -233,19 +251,138 @@ _Bool whileLoop(){
 }
 
 _Bool returnStatement(){
-
+    if (match(RETURN_KEYWORD)){
+        if ((someLexics[index].token == WHILE_KEYWORD)||
+            (someLexics[index].token == RETURN_KEYWORD)||
+            (someLexics[index].token == IDENTIFIER)||
+            (someLexics[index].token == LEFT_BRACKET)){
+            if (expression()){
+                if (match(EOL)){
+                    return TRUE;
+                }
+                else{
+                    return FALSE;
+                }
+            }
+            else{
+                return FALSE;
+            }
+        }
+        else{
+            return FALSE;
+        }
+    }
+    else{
+        return FALSE;
+    }
 }
 
 _Bool assignment(){
-
+    if (match(IDENTIFIER)){
+        if (match(EQUAL)){
+            if ((someLexics[index].token == WHILE_KEYWORD)||
+                (someLexics[index].token == RETURN_KEYWORD)||
+                (someLexics[index].token == IDENTIFIER)||
+                (someLexics[index].token == LEFT_BRACKET)){
+                if (expression()){
+                    if (match(EOL)){
+                        return TRUE;
+                    }
+                    else{
+                        return FALSE;
+                    }
+                }
+                else{
+                    return FALSE;
+                }
+            }
+            else{
+                return FALSE;
+            }
+        }
+        else{
+            return FALSE;
+        }
+    }
+    else{
+        return FALSE;
+    }
 }
 
 _Bool expression(){
-
+    if ((someLexics[index].token == IDENTIFIER)||
+    (someLexics[index].token == NUMBER)){
+        if (term()){
+            while (someLexics[index].token == BINOP){
+                if (match(BINOP)){
+                    if (term()){
+                        return TRUE;
+                    }
+                    else{
+                        return FALSE;
+                    }
+                }
+                else{
+                    return FALSE;
+                }
+            }
+            return TRUE;
+        }
+        else{
+            return FALSE;
+        }
+    }
+    else if (someLexics[index].token == LEFT_PARENTHESIS){
+        if (match(LEFT_PARENTHESIS)){
+            if ((someLexics[index].token == WHILE_KEYWORD)||
+                (someLexics[index].token == RETURN_KEYWORD)||
+                (someLexics[index].token == IDENTIFIER)||
+                (someLexics[index].token == LEFT_BRACKET)){
+                if (expression()){
+                    if (match(RIGHT_PARENTHESIS)){
+                        return TRUE;
+                    }
+                    else{
+                        return FALSE;
+                    }
+                }
+                else{
+                    return FALSE;
+                }
+            }
+            else{
+                return FALSE;
+            }
+        }
+        else{
+            return FALSE;
+        }
+    }
+    else{
+        return FALSE;
+    }
 }
 
 _Bool term(){
-
+    if (someLexics[index].token == IDENTIFIER){
+        if (match(IDENTIFIER)){
+            return TRUE;
+        }
+        else{
+            return FALSE;
+        }
+    }
+    else if (someLexics[index].token == NUMBER){
+        if (match(NUMBER)){
+            return TRUE;
+        }
+        else{
+            return FALSE;
+        }
+    }
+    else{
+        return FALSE;
+    }
 }
 
 _Bool match(enum token tok){
