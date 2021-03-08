@@ -21,8 +21,36 @@ _Bool function(){
 
 _Bool header(){
     if (match(VARTYPE)){
-        if(match(IDENTIFIER)){
-
+        if (match(IDENTIFIER)){
+            if (match(LEFT_PARENTHESIS)){
+                if (someLexics[index].token == VARTYPE){
+                    if (argDecl()){
+                        if (match(RIGHT_PARENTHESIS)){
+                            return TRUE;
+                        }
+                        else{
+                            return FALSE;
+                        }
+                    }
+                    else{
+                        return FALSE;
+                    }
+                }
+                else if (someLexics[index].token == RIGHT_PARENTHESIS){
+                    if (match(RIGHT_PARENTHESIS)){
+                        return TRUE;
+                    }
+                    else{
+                        return FALSE;
+                    }
+                }
+                else{
+                    return FALSE;
+                }
+            }
+            else{
+                return FALSE;
+            }
         }
         else{
             return FALSE;
@@ -34,23 +62,174 @@ _Bool header(){
 }
 
 _Bool argDecl(){
-
+    if (match(VARTYPE)){
+        if (match(IDENTIFIER)){
+            if (someLexics[index].token == COMMA){
+                if (match(COMMA)){
+                    if (argDecl()){
+                        return TRUE;
+                    }
+                    else{
+                        return FALSE;
+                    }
+                }
+            }
+            else{
+                return TRUE;
+            }
+        }
+        else{
+            return FALSE;
+        }
+    }
+    else{
+        return FALSE;
+    }
 }
 
 _Bool body(){
-
+    if (match(LEFT_BRACKET)){
+        if (someLexics[index].token == WHILE_KEYWORD){
+            if (statementList()){
+                return TRUE;
+            }
+            else{
+                return FALSE;
+            }
+        }
+        else if (someLexics[index].token == RETURN_KEYWORD){
+            if (statementList()){
+                return TRUE;
+            }
+            else{
+                return FALSE;
+            }
+        }
+        else if (someLexics[index].token == IDENTIFIER){
+            if (statementList()){
+                return TRUE;
+            }
+            else{
+                return FALSE;
+            }
+        }
+        else if (someLexics[index].token == LEFT_BRACKET){
+            if (statementList()){
+                return TRUE;
+            }
+            else{
+                return FALSE;
+            }
+        }
+        else if (someLexics[index].token == RIGHT_BRACKET){
+            if (match(RIGHT_BRACKET)){
+                return TRUE;
+            }
+            else{
+                return FALSE;
+            }
+        }
+        else{
+            return FALSE;
+        }
+    }
+    else{
+        return FALSE;
+    }
 }
 
 _Bool statementList(){
-
+    while ((someLexics[index].token == WHILE_KEYWORD)||
+            (someLexics[index].token == RETURN_KEYWORD)||
+            (someLexics[index].token == IDENTIFIER)||
+            (someLexics[index].token == LEFT_BRACKET)) {
+        if (someLexics[index].token == WHILE_KEYWORD) {
+            if (statement()) {
+                return TRUE;
+            } else {
+                return FALSE;
+            }
+        } else if (someLexics[index].token == RETURN_KEYWORD) {
+            if (statement()) {
+                return TRUE;
+            } else {
+                return FALSE;
+            }
+        } else if (someLexics[index].token == IDENTIFIER) {
+            if (statement()) {
+                return TRUE;
+            } else {
+                return FALSE;
+            }
+        } else if (someLexics[index].token == LEFT_BRACKET) {
+            if (statement()) {
+                return TRUE;
+            } else {
+                return FALSE;
+            }
+        }
+        else {
+            return FALSE;
+        }
+    }
+    return TRUE;
 }
 
 _Bool statement(){
-
+    if (someLexics[index].token == WHILE_KEYWORD) {
+        if (whileLoop()) {
+            return TRUE;
+        } else {
+            return FALSE;
+        }
+    } else if (someLexics[index].token == RETURN_KEYWORD) {
+        if (returnStatement()) {
+            return TRUE;
+        } else {
+            return FALSE;
+        }
+    } else if (someLexics[index].token == IDENTIFIER) {
+        if (assignment()) {
+            return TRUE;
+        } else {
+            return FALSE;
+        }
+    } else if (someLexics[index].token == LEFT_BRACKET) {
+        if (body()) {
+            return TRUE;
+        } else {
+            return FALSE;
+        }
+    }
+    else {
+        return FALSE;
+    }
 }
 
 _Bool whileLoop(){
-
+    if (match(RETURN_KEYWORD)){
+        if (match(LEFT_PARENTHESIS)){
+            if((someLexics[index].token == LEFT_PARENTHESIS)||
+            (someLexics[index].token == IDENTIFIER)||
+            (someLexics[index].token == NUMBER)){
+                if (expression()){
+                    return TRUE;
+                }
+                else{
+                    return FALSE;
+                }
+            }
+            else{
+                return FALSE;
+            }
+        }
+        else{
+            return FALSE;
+        }
+    }
+    else{
+        return FALSE;
+    }
 }
 
 _Bool returnStatement(){
